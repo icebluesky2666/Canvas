@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    #canvas {
+      background: #000;
+      width: 400px;
+      height: 400px;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="canvas"></canvas>
+  <script>
+    /** @type {HTMLCanvasElement} */ 
+    //获取画布
+    var canvas = document.getElementById("canvas");
+    //获取上下文
+    var context = canvas.getContext("2d");
+    var cx = canvas.width = 400;
+    var cy = canvas.height = 400;
+    // 圆
+    /* context.beginPath();// 起始一条路径，或重置当前路径
+    context.arc(100, 100, 50, 0, Math.PI * 2, true);// 创建弧/曲线
+    context.fillStyle = 'rgb(255,255,255)'; // 设置或返回用于填充绘画的颜色、渐变或模式
+    context.shadowBlur = 20;
+    context.shadowColor = '#fff'
+    context.closePath();// 创建从当前点回到起始点的路径
+    context.fill();// 填充当前绘图（路径） */
+    // eg：绘制四分之一圆，不填充
+    /* context.beginPath();
+    context.arc(100,100,50,0,Math.PI*0.5,false);
+    context.closePath();
+    context.strokeStyle = "#fff";
+    context.stroke();   */  
+    //eg：绘制线条
+    /* context.beginPath();
+    context.lineTo(10,10);
+    context.lineTo(100,100);
+    context.lineCap = 'round';
+    context.lineWidth = 10;
+    context.strokeStyle = '#fff';
+    context.stroke(); */
+    //绘制矩形
+    /* context.beginPath();
+    context.fillStyle ='#fff';
+    context.fillRect(10,10,100,100);
+    context.strokeStyle = 'red';
+    context.strokeRect(130,10,100,100); */
+    //绘制黑色渐变矩形
+    /* var grd = context.createLinearGradient(100,100,100,200);
+    grd.addColorStop(0,'#000');
+    grd.addColorStop(1,'#fff');
+    context.fillStyle = grd;
+    context.fillRect(100,100,200,200); */
+    // 缩放
+    /* context.strokeStyle = 'white';
+    context.strokeRect(5,5,50,25);
+    context.scale(2,2);
+    context.strokeRect(5,5,50,25);
+    context.scale(2,2);
+    context.strokeRect(5,5,50,25); */
+    //旋转
+    context.fillStyle = 'white';
+    context.rotate(20*Math.PI/180);
+    context.fillRect(70,30,200,100);
+  </script>
+</body>
+
+</html>
+<!--
+  https://juejin.im/book/5a0ab8e2f265da43111fbab2/section/5a0bd02e518825293b4fd87c
+  如果使用 CSS 来设置宽高的话，画布就会按照 300 * 150 的比例进行缩放，也就是将 300 * 150 的页面显示在 400 * 400 的容器中，尽量使用 HTML 的width 和 height 属性或者直接使用 JS 动态来设置宽高，不要使用 CSS 设置。
+  angle : 旋转角度，以弧度计。 如需将角度转换为弧度，请使用 degrees*Math.PI/180 公式进行计算。 举例：如需旋转 5 度，可规定下面的公式：5*Math.PI/180。
+
+-->

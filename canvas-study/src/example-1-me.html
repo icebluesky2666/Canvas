@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>example-1-me</title>
+</head>
+<style>
+  html,
+  body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #fff;
+  }
+  *{
+    margin: 0;
+    padding: 0;
+  }
+</style>
+
+<body>
+  <canvas id="canvas"></canvas>
+  <script>
+    /** @type {HTMLCanvasElement} */
+    var ctx = document.getElementById('canvas'),
+      content = ctx.getContext('2d');
+
+    var CanvasWidth,
+      CanvasHeight,
+      colorArray = ['#272F32', '#9DBDC6', '#FF3D2E', '#DAEAEF'],
+      mumber = 600,
+      paopaoList = [],
+      xMouse,
+      yMouse,
+      distance = 50,
+      maxSize = 35;
+
+    CanvasWidth = window.innerWidth;
+    CanvasHeight = window.innerHeight;
+    ctx.width = CanvasWidth;
+    ctx.height = CanvasHeight;
+
+    // 气泡对象
+    function paopao(x,y,r,color){
+      this.x = x;
+      this.y = y;
+      this.r = r;
+      this.color = color;
+      // x轴递增或递减
+      if(Math.random()*2>1){
+        this.xChange = Math.random()*1;
+      }else{
+        this.xChange = -Math.random()*1;
+      }
+      //y轴递增或者递减
+      if(Math.random()*2>1){
+        this.yChange = Math.random()*1;
+      }else{
+        this.yChange = -Math.random()*1;
+      }
+      //记录本身的尺寸
+      this.smallSizeR = r;
+    }
+    // 气泡移动
+    paopao.prototype.move = function(){
+      // 靠近边界反弹
+      if(innerWidth - this.x<1||this.x<1){
+        this.xChange = -this.xChange;
+      }
+      if(innerHeight - this.y<1||this.y<1){
+        this.yChange = -this.yChange;
+      }
+      // 不断变化
+      this.x = this.x+this.xChange;
+      this.y = this.y+this.yChange;
+      //靠近鼠标变大
+      if(Math.abs(this.x - xMouse)<=50 && Math.abs(this.y - yMouse)<=50){
+        if( this.r<=maxSize-2){
+          this.r = this.r+2;
+        }else{
+          this.r = maxSize;
+        }
+      }else{
+        if(this.r>=this.smallSizeR+2){
+          this.r = this.r-2;
+        }else{
+          this.r = this.smallSizeR;
+        }
+      }
+      this.draw();
+    }
+    // 渲染气泡
+    paopao.prototype.draw = function(){
+      content.fillStyle = this.color;
+      content.beginPath();
+      content.arc(this.x,this.y,this.r,0,Math.PI*2,false);
+      content.closePath();
+      content.fill();
+    }
+
+    //初始化气泡
+    function Init(){
+      for(let i=0;i<mumber;i++){
+        let x = Math.floor(Math.random()*CanvasWidth);
+        let y = Math.floor(Math.random()*CanvasHeight);
+        let RandomR = Math.floor(Math.random()*5);
+        let colorIndex = Math.floor(Math.random()*4);
+        let color = colorArray[colorIndex];
+        var p = new paopao(x,y,RandomR,color);
+        paopaoList.push(p);
+        p.draw();
+      }
+      changeBig();
+      HZ();
+    }
+
+    //按照屏幕刷新率重复渲染
+    function HZ(){
+      content.clearRect(0, 0, CanvasWidth, CanvasHeight);
+      for(let i=1;i<mumber;i++){
+        paopaoList[i].move();
+      }
+      requestAnimationFrame(HZ)
+    }
+
+    // 靠近鼠标变大
+    function changeBig(){
+      ctx.onmousemove = function(e){
+        xMouse = e.clientX;
+        yMouse = e.clientY;
+        console.log(xMouse,yMouse)
+      }
+    }
+
+    Init();
+
+  </script>
+</body>
+
+</html>
